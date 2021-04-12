@@ -5,11 +5,17 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from .views import *
 
 urlpatterns = [
+    path('authenticate/', CustomObtainAuthToken.as_view()),
+    # path('register/', RegisterView.as_view(), name="register"),
+    # path('users/all', UserViewSet.as_view()),
     path('auth/', include('djoser.urls')),
     # path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    #path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('auth/token/', obtain_auth_token, name='token'),
-    path('auth/logout', Logout.as_view()),
+    # path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+
+    # path('auth/token/', obtain_auth_token, name='token'),
+    path('auth/token/', CustomObtainAuthToken.as_view(), name='token'),
+
+    # path('auth/logout', Logout.as_view()),
 
     path('managers/<int:pk>', ManagerRetrieveView.as_view()),
     path('managers/update/<int:pk>', ManagerUpdateView.as_view()),

@@ -1,13 +1,46 @@
-from rest_framework import generics, permissions
+from rest_framework import generics, permissions, status
+from rest_framework.permissions import AllowAny
 from rest_framework.views import APIView
+from django.db.models import Q
+from rest_framework.response import Response
+from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.authtoken.models import Token
 from rest_framework.exceptions import PermissionDenied
 
 from .serializers import *
 from .models import *
 
 
+class CustomObtainAuthToken(ObtainAuthToken):
+    def post(self, request, *args, **kwargs):
+        response = super(CustomObtainAuthToken, self).post(request, *args, **kwargs)
+        token = Token.objects.get(key=response.data['token'])
+        user = User.objects.get(id=token.user_id)
+        return Response({'token': token.key, 'id': token.user_id, 'user': UserSerializer(user).data})
+
+
 # permission_class = permissions.IsAuthenticatedOrReadOnly
 # Input in every class we need to protect
+
+# class RegisterView(generics.GenericAPIView):
+#
+#     serializer_class = RegisterSerializer
+#
+#     def post(self, request):
+#         user = request.data
+#         serializer = self.serializer_class(data=user)
+#         serializer.is_valid(raise_exception=True)
+#         serializer.save()
+#         user_data = serializer.data
+#
+#         return Response(user_data, status=status.HTTP_201_CREATED)
+#
+#
+# class UserViewSet(generics.ListAPIView):
+#     queryset = User.objects.all()
+#     serializer_class = UserSerializer
+
+
 class Logout(APIView):
 
     def get(self, request, format=None):
@@ -34,16 +67,16 @@ class ManagerRetrieveView(generics.RetrieveAPIView):
 class ManagerUpdateView(generics.UpdateAPIView):
     queryset = Manager.objects.all()
     serializer_class = CreateManagerSerializer
-    permission_classes = (IsManager,)
+    # permission_classes = (IsManager,)
     # permission_class = permissions.IsAuthenticatedOrReadOnly
 
-    def get_queryset(self):
-        user = self.request.user
-
-        if user.is_authenticated:
-            return Manager.objects.filter(user=user)
-
-        raise PermissionDenied()
+    # def get_queryset(self):
+    #     user = self.request.user
+    #
+    #     if user.is_authenticated:
+    #         return Manager.objects.filter(user=user)
+    #
+    #     raise PermissionDenied()
 
 
 class ManagerCreateView(generics.CreateAPIView):
@@ -78,24 +111,29 @@ class ProducerCreateView(generics.CreateAPIView):
 class ServiceViewSet(generics.ListAPIView):
     # queryset = Service.objects.all()
     serializer_class = ServiceSerializer
+    permission_classes = (AllowAny,)
 
     def get_queryset(self):
         queryset = Service.objects.all()
 
         params = self.request.query_params
 
-        price = params.get('price', None)
-        producer = params.get('producer', None)
-        manager = params.get('manager', None)
+        price_min = params.get('price_min', None)
+        price_max = params.get('price_max', None)
+        address = params.get('address', None)
+        name = params.get('name', None)
 
-        if price:
-            queryset = queryset.filter(price__lte=price)
+        if price_min:
+            queryset = queryset.filter(price__gte=price_min)
 
-        if producer:
-            queryset = queryset.filter(producer__id=producer)
+        if price_max:
+            queryset = queryset.filter(price__lte=price_max)
 
-        if manager:
-            queryset = queryset.filter(manager__id=producer)
+        if address:
+            queryset = queryset.filter(address__icontains=address)
+
+        if name:
+            queryset = queryset.filter(Q(name__icontains=name) | Q(description__icontains=name))
 
         return queryset
 

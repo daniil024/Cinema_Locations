@@ -2,6 +2,15 @@
   <b-form @submit.prevent="register">
     <p v-if="err">{{ err }}</p>
 
+  <div class="form-group">
+       <label class="control-label" for="firstname">Имя:</label>
+       <b-input v-model="form.firstname" type="text" id="firstname" placeholder="Имя..."></b-input>
+     </div>
+  <div class="form-group">
+       <label class="control-label" for="lastname">Фамилия:</label>
+       <b-input v-model="form.lastname" type="text" id="lastname" placeholder="Фамилия..."></b-input>
+     </div>
+
     <div class="form-group required">
       <label class="control-label" for="username">Логин:</label>
       <b-input v-model="form.username" type="text" id="username" placeholder="Логин..."/>
@@ -10,8 +19,8 @@
     </div>
 
     <div class="form-group required">
-       <label class="control-label" for="mail">E-mail:</label>
-       <b-input v-model="form.mail" type="text" id="mail" placeholder="e-mail..."></b-input>
+       <label class="control-label" for="email">E-mail:</label>
+       <b-input v-model="form.email" type="text" id="email" placeholder="e-mail..."></b-input>
      </div>
 
     <div class="form-group required">
@@ -66,6 +75,7 @@
 import { required, minLength, sameAs } from 'vuelidate/lib/validators'
 import { IMaskDirective } from 'vue-imask'
 import authRequest from '@/mixins/authRequest'
+import editRequest from '@/mixins/editRequest'
 
 export default {
   name: "SignUpForm",
@@ -73,8 +83,10 @@ export default {
     return {
       form: {
         username: "",
-        mail:"",
         password: "",
+        email: "",
+        firstname: "",
+        lastname: "",
         repeatPassword: "",
         phone: "",
         managerOrProducer: "",
@@ -98,7 +110,7 @@ export default {
         required,
         minLength: minLength(5)
       },
-      mail:{
+      email:{
           required
       },
       password: {
@@ -128,14 +140,24 @@ export default {
         && !form.repeatPassword.sameAs
     }
   },
-  mixins: [ authRequest ],
+  mixins: [ authRequest, editRequest ],
   methods: {
     async register () {
       // логика регистрации
       try {
-        await this.authRequest('api/auth/users', this.form)
-        // редиректим, если нет ошибки
-        this.$router.push('/auth/signin')
+        const response = await this.authRequest('api/auth/users/', this.form);
+        // const token = await this.authRequest('api/auth/token/', 
+        //   {"username":this.form.username, "password":this.form.password});
+        // console.log(token.token);
+        // console.log(response.id);
+        // // wait until the promise returns us a value
+        // let resultToken = await token; 
+        // this.axios.post('http://localhost:8000/api/managers/new', 
+        //   { headers: {Authorization:`Token ${resultToken.token}`}}, {user:response.id, phone:this.form.phone})
+        // .then(response => {console.log(response.data.phone)})
+        // .catch(err => { console.error(err) });
+        this.$store.dispatch('user', response);
+        this.$router.push('/auth/signin');
       } catch (e) {
         console.error('AN API ERROR', e)
         this.err = e

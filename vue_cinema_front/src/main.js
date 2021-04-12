@@ -7,6 +7,7 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import router from './router/index'
 import Vuelidate from 'vuelidate'
+import store from './vuex'
 
 
 // Vue.use section ...
@@ -21,6 +22,7 @@ Vue.config.productionTip = false;
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>',
   axios,

@@ -1,4 +1,4 @@
-const authRequest = {
+const editRequest = {
     methods: {
       /**
        * authRequest
@@ -16,15 +16,15 @@ const authRequest = {
        * @returns {Object} ответ с сервера
        * @throws {Error} ошибка при неудаче
        */
-      async authRequest (url, data) {
-        const DEFAULT_HEADERS = { 'Content-type': 'application/json'}
-        // 'Authorization': `Token ${localStorage.token}`}
+      async editRequest (url, data) {
+        const DEFAULT_HEADERS = { 'Content-type': 'application/json', 'Authorization': `Token ${localStorage.token}`}
+        //Authorization: `Token ${localStorage.token}`}
         const BASE_URL = 'http://localhost:8000'
         
         const __url = `${BASE_URL}/${url}`
-  
+
         const response = await this.axios({
-          method: 'POST',
+          method: 'PATCH',
           url: __url, 
           data: data,
           headers: DEFAULT_HEADERS
@@ -33,10 +33,9 @@ const authRequest = {
         if (response.status !== 200 && response.status !== 201) {
           throw new Error(response.error)
         }
-  
-        return response.data
+        return response.data;
       }
     }
   }
   
-  export default authRequest
+  export default editRequest
