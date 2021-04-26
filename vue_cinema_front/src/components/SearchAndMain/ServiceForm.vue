@@ -10,10 +10,10 @@
     </div>
     <p style="white-space: pre-line; margin-top: 50px">
       <span style="font-weight: bold">От пользователя: </span
-      >{{ form.manager.user.username }}
+      >{{ form.user.username }}
     </p>
     <p style="font-weight: bold">Контакты:</p>
-    <p>{{ form.manager.phone }}</p>
+    <p>{{ form.contacts }}</p>
     <p style="font-weight: bold">Описание:</p>
     <p>{{ form.description }}</p>
     <p style="font-weight: bold">Адрес:</p>
@@ -57,17 +57,24 @@ export default {
         address: "",
         photos: [],
         description: "",
+        contacts:"",
         link: "Локация была создана с помощью данного сервиса!",
-        manager: {
-          id: 0,
-          user: {
-            username: "",
-            email: "",
-            first_name: "",
-            last_name: "",
-          },
-          phone: "",
-        },
+        // manager: {
+        //   id: 0,
+        //   user: {
+        //     username: "",
+        //     email: "",
+        //     first_name: "",
+        //     last_name: "",
+        //   },
+        //   phone: "",
+        // },
+        user: {
+             username: "",
+             email: "",
+             first_name: "",
+             last_name: "",
+           },
       },
     };
   },
@@ -84,7 +91,39 @@ export default {
         this.form.price = response.price;
         this.form.address = response.address;
         this.form.description = response.description;
-        this.form.manager = response.manager;
+        this.form.user = response.user;
+        this.form.contacts = response.contacts;
+
+        if(response.photo1!=="" && response.photo1!=null){
+        this.form.photos.push(response.photo1)
+        }
+        if(response.photo2!=="" && response.photo2!=null){
+        this.form.photos.push(response.photo2)
+        }
+        if(response.photo3!=="" && response.photo3!=null){
+        this.form.photos.push(response.photo3)
+        }
+        if(response.photo4!=="" && response.photo4!=null){
+        this.form.photos.push(response.photo4)
+        }
+        if(response.photo5!=="" && response.photo5!=null){
+        this.form.photos.push(response.photo5)
+        }
+        if(response.photo6!=="" && response.photo6!=null){
+        this.form.photos.push(response.photo6)
+        }
+        if(response.photo7!=="" && response.photo7!=null){
+        this.form.photos.push(response.photo7)
+        }
+        if(response.photo8!=="" && response.photo8!=null){
+        this.form.photos.push(response.photo8)
+        }
+        if(response.photo9!=="" && response.photo9!=null){
+        this.form.photos.push(response.photo9)
+        }
+        if(response.photo10!=="" && response.photo10!=null){
+        this.form.photos.push(response.photo10)
+        }
         if (response.link !== undefined && response.link!=="" && response.link!==null)  {
           this.form.link = response.link;
         }

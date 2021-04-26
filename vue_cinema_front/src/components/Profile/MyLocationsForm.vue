@@ -14,50 +14,25 @@
           </button>
         </div>
       </div>
-      <div>
-        <div style="display: inline-block">
-          <p>Введите цену:</p>
-          <input
-            v-model="inputform.priceMin"
-            type="text"
-            style="width: 80px; display: inline-block"
-            class="form-control"
-            placeholder="От"
-          />
-          &#8212;
-          <input
-            v-model="inputform.priceMax"
-            type="text"
-            style="width: 80px; display: inline-block"
-            class="form-control"
-            placeholder="До"
-          />
-        </div>
-        <div style="margin-left: 30px; display: inline-block">
-          <p>Введите адрес:</p>
-          <input
-            v-model="inputform.address"
-            type="text"
-            class="form-control"
-            placeholder="Адрес"
-          />
-        </div>
-      </div>
+
       <hr color="black" />
     </b-form>
-    <div style="text-align: center;">
-    <h4 class="text-center" style="margin-bottom: 40px; display:inline-block;">
-      Всего найдено {{ inputform.numberOfServices }} объявлений
-    </h4>
-    <router-link to="/newservice" style="display:inline-block; float: right">Добавить локацию</router-link>
+    <div style="text-align: center">
+      <h4
+        class="text-center"
+        style="margin-bottom: 40px; display: inline-block"
+      >
+        Всего найдено {{ inputform.numberOfServices }} объявлений
+      </h4>
+      <router-link to="/newservice" style="display: inline-block; float: right"
+        >Добавить локацию</router-link
+      >
     </div>
 
     <div v-for="item in collection" :key="item.id">
-      <!-- <div v-for="item in servicesfill.items" :key="item.id"> -->
       <div style="display: inline-block">
         <h5>
-          <a :href="'/service/' + item.id">{{ item.name }}</a>
-          <!-- <a :href="item.link">{{ item.name }}</a> -->
+          <a :href="'/editservice/' + item.id">{{ item.name }}</a>
         </h5>
         <p
           style="
@@ -91,9 +66,6 @@
         </div>
       </div>
     </div>
-    <!-- <div style="margin-top:40px; text-align: center">
-      <b-button variant="primary" type="submit">Следующие результаты</b-button>
-    </div> -->
   </div>
 </template>
 <script>
@@ -155,14 +127,13 @@ export default {
     },
     async find() {
       try {
-        var path = "api/service/all";
+        var path = "api/service/all?user=" + localStorage.iduser + "&";
         if (
           this.inputform.priceMin !== "" ||
           this.inputform.priceMax !== "" ||
           this.inputform.address !== "" ||
           this.inputform.inputsearch
         ) {
-          path += "?";
           if (this.inputform.priceMin !== "") {
             path += "price_min=" + this.inputform.priceMin + "&";
           }

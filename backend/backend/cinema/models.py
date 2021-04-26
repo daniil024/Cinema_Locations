@@ -58,32 +58,49 @@ from django.contrib.auth.models import User
 
 
 class Manager(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
     phone = models.CharField(max_length=20)
+    first_name = models.CharField(max_length=68, blank=True)
+    last_name = models.CharField(max_length=68, blank=True)
 
     def __str__(self):
-        return "User: {}, Phone: {}".format(self.user, self.phone)
+        return "User: {}, Phone: {}, First name: {}, Last name: {}".format(self.user, self.phone,
+                                                                           self.first_name, self.last_name)
 
 
 class Producer(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    # user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
     phone = models.CharField(max_length=20)
+    first_name = models.CharField(max_length=24, blank=True)
+    last_name = models.CharField(max_length=24, blank=True)
 
     def __str__(self):
-        return "User: {}, Phone: {}".format(self.user, self.phone)
+        return "User: {}, Phone: {}, First name: {}, Last name: {}".format(self.user, self.phone,
+                                                                           self.first_name, self.last_name)
 
 
 class Service(models.Model):
-    producer = models.ForeignKey(Producer, on_delete=models.CASCADE, blank=True, null=True)
-    manager = models.ForeignKey(Manager, on_delete=models.CASCADE, blank=True, null=True)
+    # producer = models.ForeignKey(Producer, on_delete=models.CASCADE, blank=True, null=True)
+    # manager = models.ForeignKey(Manager, on_delete=models.CASCADE, blank=True, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)  # оставить null=True
     name = models.CharField(max_length=200)
     description = models.CharField(max_length=10000)
     address = models.CharField(max_length=1000, null=True)
     link = models.CharField(max_length=1500, blank=True, null=True)
     price = models.IntegerField()
+    contacts = models.TextField(blank=True)
     photo_link = models.CharField(max_length=20000, blank=True, null=True)
-
-    # photo = models.ImageField(blank=True, null=True)
+    photo1 = models.CharField(max_length=20000, blank=True, null=True)
+    photo2 = models.CharField(max_length=20000, blank=True, null=True)
+    photo3 = models.CharField(max_length=20000, blank=True, null=True)
+    photo4 = models.CharField(max_length=20000, blank=True, null=True)
+    photo5 = models.CharField(max_length=20000, blank=True, null=True)
+    photo6 = models.CharField(max_length=20000, blank=True, null=True)
+    photo7 = models.CharField(max_length=20000, blank=True, null=True)
+    photo8 = models.CharField(max_length=20000, blank=True, null=True)
+    photo9 = models.CharField(max_length=20000, blank=True, null=True)
+    photo10 = models.CharField(max_length=20000, blank=True, null=True)
 
     def __str__(self):
         return "{}, price: {}".format(self.name, self.price)

@@ -19,10 +19,17 @@
       ></b-input>
     </div>
     <b-button variant="primary" type="submit">Войти</b-button>
-    <p class="mt-3">
-      Ещё не зарегистрированы?
-      <router-link to="/auth/signup">Регистрация</router-link>
-    </p>
+    <div>
+      <p style="display:inline;" class="mt-3">
+        Ещё не зарегистрированы?
+        <router-link to="/auth/signup">Регистрация</router-link>
+      </p>
+
+      <p style="display:inline; float:right" class="forgot-password text-right">
+        <router-link to='/forgot'>Забыли пароль?</router-link>
+      </p>
+
+    </div>
   </b-form>
 </template>
 <script>
@@ -47,16 +54,16 @@ export default {
         // авторизуем юзера
         this.$store.dispatch("token", response.token);
         this.$store.dispatch("user", response.user);
-
-        this.setLogined(response.token);
+        this.setLogined(response.token, response.user.id);
         this.$router.push("/LK");
       } catch (error) {
         console.error("AN API ERROR:", error);
       }
     },
-    setLogined(token) {
+    setLogined(token, iduser) {
       // сохраняем токен
       localStorage.setItem("token", token);
+      localStorage.setItem("iduser", iduser);
     },
   },
 };

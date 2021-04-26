@@ -26,7 +26,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         #fields = ['id', 'username', 'email', 'password']
-        fields = ['username', 'email', 'first_name', 'last_name', 'password']
+        fields = ['id', 'username', 'email', 'first_name', 'last_name', 'password']
 
 
 class ManagerSerializer(serializers.ModelSerializer):
@@ -58,8 +58,9 @@ class CreateProducerSerializer(serializers.ModelSerializer):
 
 
 class ServiceSerializer(serializers.ModelSerializer):
-    producer = ProducerSerializer()
-    manager = ManagerSerializer()
+    user = UserSerializer()
+    # producer = ProducerSerializer()
+    # manager = ManagerSerializer()
 
     class Meta:
         model = Service
@@ -88,8 +89,8 @@ class CreateTagSerializer(serializers.ModelSerializer):
 
 class OrderingSerializer(serializers.ModelSerializer):
     service = ServiceSerializer()
-    producer = ProducerSerializer()
-    manager = ManagerSerializer()
+    # producer = ProducerSerializer()
+    # manager = ManagerSerializer()
 
     class Meta:
         model = Ordering
@@ -103,8 +104,8 @@ class CreateOrderingSerializer(serializers.ModelSerializer):
 
 
 class MessageSerializer(serializers.ModelSerializer):
-    producer = ProducerSerializer()
-    manager = ManagerSerializer()
+    # producer = ProducerSerializer()
+    # manager = ManagerSerializer()
 
     class Meta:
         model = Message

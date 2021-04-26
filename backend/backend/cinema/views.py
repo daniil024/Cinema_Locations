@@ -1,5 +1,5 @@
 from rest_framework import generics, permissions, status
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.views import APIView
 from django.db.models import Q
 from rest_framework.response import Response
@@ -82,6 +82,7 @@ class ManagerUpdateView(generics.UpdateAPIView):
 class ManagerCreateView(generics.CreateAPIView):
     queryset = Manager.objects.all()
     serializer_class = CreateManagerSerializer
+    permission_classes = (AllowAny,)
 
 
 # -----------------------------------
@@ -104,12 +105,12 @@ class ProducerUpdateView(generics.UpdateAPIView):
 class ProducerCreateView(generics.CreateAPIView):
     queryset = Producer.objects.all()
     serializer_class = CreateProducerSerializer
+    permission_classes = (AllowAny,)
 
 
 # ---------------------------------------
 
 class ServiceViewSet(generics.ListAPIView):
-    # queryset = Service.objects.all()
     serializer_class = ServiceSerializer
     permission_classes = (AllowAny,)
 
@@ -122,6 +123,10 @@ class ServiceViewSet(generics.ListAPIView):
         price_max = params.get('price_max', None)
         address = params.get('address', None)
         name = params.get('name', None)
+        user = params.get('user', None)
+
+        if user:
+            queryset = queryset.filter(user=user)
 
         if price_min:
             queryset = queryset.filter(price__gte=price_min)
@@ -139,11 +144,13 @@ class ServiceViewSet(generics.ListAPIView):
 
 
 class ServiceRetrieveView(generics.RetrieveAPIView):
+    permission_classes = (AllowAny,)
     queryset = Service.objects.all()
     serializer_class = ServiceSerializer
 
 
 class ServiceUpdateView(generics.UpdateAPIView):
+    permission_classes = (AllowAny,)
     queryset = Service.objects.all()
     serializer_class = CreateServiceSerializer
 

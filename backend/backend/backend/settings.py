@@ -28,7 +28,7 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
-#AUTH_USER_MODEL = 'cinema.User'
+# AUTH_USER_MODEL = 'cinema.User'
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -132,6 +132,7 @@ REST_FRAMEWORK = {
         "rest_framework.parsers.JSONParser",
     ],
     "DEFAULT_AUTHENTICATION_CLASSES": [
+        'rest_framework.authentication.BasicAuthentication',
         "rest_framework.authentication.SessionAuthentication",
         "rest_framework_simplejwt.authentication.JWTAuthentication",
         'rest_framework.authentication.TokenAuthentication',

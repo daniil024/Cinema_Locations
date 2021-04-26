@@ -40,21 +40,25 @@
       </div>
     </b-form>
 
-    <h4 style="margin-top: 50px" class="w-50 mx-left">Мои заказы</h4>
+    <div style="margin-top: 100px;">
+      <h4 style="display:inline-block" class="w-50 mx-left">Мои локации</h4>
+      <router-link to="/mylocations" style="display:inline-block; float:right">Посмотреть все</router-link>
+    </div>
     <div style="margin-top: 20px; display: flex" class="w-100 mx-left">
-
       <div class="card" style="width: 18rem; display: inline-block">
         <div class="card-body">
-          <h5 class="card-title">{{title}}</h5>
+          <h5 class="card-title">{{ title }}</h5>
           <p class="card-text">
-            {{desc}}
+            {{ desc }}
           </p>
           <a href="#" class="btn btn-primary">Go somewhere</a>
         </div>
       </div>
 
-      
-      <div class="card" style="width: 18rem; margin-left:45px; display: inline-block">
+      <div
+        class="card"
+        style="width: 18rem; margin-left: 45px; display: inline-block"
+      >
         <div class="card-body">
           <h5 class="card-title">Card title</h5>
           <p class="card-text">
@@ -65,8 +69,10 @@
         </div>
       </div>
 
-      
-      <div class="card" style="width: 18rem; margin-left:45px; display: inline-block">
+      <div
+        class="card"
+        style="width: 18rem; margin-left: 45px; display: inline-block"
+      >
         <div class="card-body">
           <h5 class="card-title">Card title</h5>
           <p class="card-text">
@@ -76,53 +82,16 @@
           <a href="#" class="btn btn-primary">Go somewhere</a>
         </div>
       </div>
-      
     </div>
 
-    <h4 style="margin-top: 50px" class="w-50 mx-left">Мои услуги</h4>
-    <div style="margin-top: 20px; display: flex" class="w-100 mx-left">
-
-      <div class="card" style="width: 18rem; display: inline-block">
-        <div class="card-body">
-          <h5 class="card-title">Card title</h5>
-          <p class="card-text">
-            Some quick example text to build on the card title and make up the
-            bulk of the card's content.
-          </p>
-          <a href="#" class="btn btn-primary">Go somewhere</a>
-        </div>
-      </div>
-
-      
-      <div class="card" style="width: 18rem; margin-left:45px; display: inline-block">
-        <div class="card-body">
-          <h5 class="card-title">Card title</h5>
-          <p class="card-text">
-            Some quick example text to build on the card title and make up the
-            bulk of the card's content.
-          </p>
-          <a href="#" class="btn btn-primary">Go somewhere</a>
-        </div>
-      </div>
-
-      
-      <div class="card" style="width: 18rem; margin-left:45px; display: inline-block">
-        <div class="card-body">
-          <h5 class="card-title">Card title</h5>
-          <p class="card-text">
-            Some quick example text to build on the card title and make up the
-            bulk of the card's content.
-          </p>
-          <a href="#" class="btn btn-primary">Go somewhere</a>
-        </div>
-      </div>
-      
+    <div style="text-align:center; margin-top:30px;">
+    <b-button to="/newservice" variant="primary" style="margin-top: 25px; text-align: center " type="submit">Добавить локацию</b-button>
     </div>
 
   </div>
 </template>
 <script>
-import {mapGetters} from 'vuex'
+import { mapGetters } from "vuex";
 import editRequest from "@/mixins/editRequest";
 export default {
   name: "LK",
@@ -133,8 +102,8 @@ export default {
         email: "",
         newPassword: "",
       },
-      title:"",
-      desc:"",
+      title: "",
+      desc: "",
       items: [
         {
           text: "Home",
@@ -179,28 +148,32 @@ export default {
       //   .catch((err) => {
       //     console.error(err);
       //   });
-      this.form.email=this.user.email;
+      this.form.email = this.user.email;
     },
   },
   beforeMount() {
     this.fillform();
 
     this.axios
-        .get(`http://localhost:8000/api/service/6`, {
-          headers: {
-            'Authorization': `Token ${localStorage.token}`,
-          }
-        })
-        .then((response)=>{
-          this.title=response.data.name;
-          this.desc=response.data.description;
-        })
-        .catch((err) => {
-          console.error(err);
-        });
+      .get(`http://localhost:8000/api/service/6`, {
+        headers: {
+          Authorization: `Token ${localStorage.token}`,
+        },
+      })
+      .then((response) => {
+        this.title = response.data.name;
+        this.desc = response.data.description;
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   },
-  computed:{
-    ...mapGetters(['user'])
-  }
+  computed: {
+    ...mapGetters(["user"]),
+  },
 };
 </script>
+
+<style scoped>
+
+</style>
