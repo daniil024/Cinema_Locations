@@ -24,9 +24,7 @@
       >
         Всего найдено {{ inputform.numberOfServices }} объявлений
       </h4>
-      <router-link to="/newservice" style="display: inline-block; float: right"
-        >Добавить локацию</router-link
-      >
+      <router-link to="/newservice" style="display: inline-block; float: right">Добавить локацию</router-link>
     </div>
 
     <div v-for="item in collection" :key="item.id">

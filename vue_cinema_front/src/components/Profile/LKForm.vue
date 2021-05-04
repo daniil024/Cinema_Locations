@@ -1,22 +1,13 @@
 <template>
   <div class="w-75 mx-auto">
     <h2 class="w-50 mx-left">Личный кабинет</h2>
-    <b-breadcrumb class="w-100 mx-left" :items="items"></b-breadcrumb>
+    <b-breadcrumb class="w-100 mx-left" :items="refs"></b-breadcrumb>
     <h4 class="w-50 mx-left" style="margin-top: 10px">Редактировать профиль</h4>
     <b-form
       class="w-75 mx-auto"
       style="margin-top: 40px"
       @submit.prevent="edit"
     >
-      <div class="form-group w-75 mx-auto">
-        <label for="phone">Телефон:</label>
-        <b-input
-          v-model="form.phone"
-          type="text"
-          id="phone"
-          placeholder="Телефон..."
-        ></b-input>
-      </div>
       <div class="form-group w-75 mx-auto">
         <label for="email">E-mail:</label>
         <b-input
@@ -44,42 +35,39 @@
       <h4 style="display:inline-block" class="w-50 mx-left">Мои локации</h4>
       <router-link to="/mylocations" style="display:inline-block; float:right">Посмотреть все</router-link>
     </div>
-    <div style="margin-top: 20px; display: flex" class="w-100 mx-left">
+    <div v-if="items[0]" style="margin-top: 20px; display: flex" class="w-100 mx-left">
       <div class="card" style="width: 18rem; display: inline-block">
         <div class="card-body">
-          <h5 class="card-title">{{ title }}</h5>
+          <h5 class="card-title">{{ items[0].name }}</h5>
           <p class="card-text">
-            {{ desc }}
+            {{ items[0].description }}
           </p>
-          <a href="#" class="btn btn-primary">Go somewhere</a>
+          <a href="#" class="btn btn-primary">Редактировать</a>
         </div>
       </div>
 
-      <div
+      <div v-if="items[1]"
         class="card"
         style="width: 18rem; margin-left: 45px; display: inline-block"
       >
         <div class="card-body">
-          <h5 class="card-title">Card title</h5>
+          <h5 class="card-title">{{items[1].name}}</h5>
           <p class="card-text">
-            Some quick example text to build on the card title and make up the
-            bulk of the card's content.
+            {{ items[1].description }}
           </p>
-          <a href="#" class="btn btn-primary">Go somewhere</a>
+          <a href="#" class="btn btn-primary">Редактировать</a>
         </div>
       </div>
 
-      <div
+      <div v-if="items[2]"
         class="card"
-        style="width: 18rem; margin-left: 45px; display: inline-block"
-      >
+        style="width: 18rem; margin-left: 45px; display: inline-block">
         <div class="card-body">
-          <h5 class="card-title">Card title</h5>
+          <h5 class="card-title">{{items[2].name}}</h5>
           <p class="card-text">
-            Some quick example text to build on the card title and make up the
-            bulk of the card's content.
+            {{ items[2].description }}
           </p>
-          <a href="#" class="btn btn-primary">Go somewhere</a>
+          <a href="#" class="btn btn-primary">Редактировать</a>
         </div>
       </div>
     </div>
@@ -93,18 +81,17 @@
 <script>
 import { mapGetters } from "vuex";
 import editRequest from "@/mixins/editRequest";
+import searchRequest from "@/mixins/searchRequest";
 export default {
   name: "LK",
   data() {
     return {
       form: {
-        phone: "",
         email: "",
         newPassword: "",
       },
-      title: "",
-      desc: "",
-      items: [
+      items:[],
+      refs: [
         {
           text: "Home",
           href: "#",
@@ -120,60 +107,31 @@ export default {
       ],
     };
   },
-  mixins: [editRequest],
+  mixins: [editRequest, searchRequest],
   methods: {
     async edit() {
       // логика авторизации
       try {
-        const response = await this.editRequest(
-          "api/managers/update/3",
+        await this.editRequest(
+          "api/managers/update/"+localStorage.iduser,
           this.form
         );
-        // авторизуем юзера
       } catch (error) {
         console.error("AN API ERROR:", error);
       }
     },
     async fillform() {
-      // const response = this.axios
-      //   .get(`http://localhost:8000/api/managers/3`, {
-      //     headers: {
-      //       'Authorization': `Token ${this.token}`,
-      //     }
-      //   })
-      //   .then((response)=>{
-      //     //this.form.phone=response.data.phone;
-      //     this.form.email=response.data.user.email;
-      //   })
-      //   .catch((err) => {
-      //     console.error(err);
-      //   });
       this.form.email = this.user.email;
     },
   },
-  beforeMount() {
+  async beforeMount() {
     this.fillform();
-
-    this.axios
-      .get(`http://localhost:8000/api/service/6`, {
-        headers: {
-          Authorization: `Token ${localStorage.token}`,
-        },
-      })
-      .then((response) => {
-        this.title = response.data.name;
-        this.desc = response.data.description;
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    var path = "api/service/all?user=" + localStorage.iduser;
+    const response = await this.searchRequest(path);
+    this.items = response;
   },
   computed: {
     ...mapGetters(["user"]),
   },
 };
 </script>
-
-<style scoped>
-
-</style>

@@ -1,7 +1,8 @@
 <template>
-  <b-form @submit.prevent="register">
-    <p v-if="err">{{ err }}</p>
 
+  <b-form @submit.prevent="register">
+<h2 style="text-align:center">Регистрация</h2>
+    <!-- <p v-if="err">{{ err }}</p> -->
   <div class="form-group">
        <label class="control-label" for="firstname">Имя:</label>
        <b-input v-model="form.firstname" type="text" id="firstname" placeholder="Имя..."></b-input>
@@ -39,17 +40,7 @@
 
       <p><small class="text-muted">Введите номер в формате: +7(921)123-45-67</small></p>
     </div>
-
-    <div class="form-group required">
-      <label class="control-label" for="managerOrProducer">Вы менеджер или продюсер?</label>
-      <b-select
-        v-model="form.managerOrProducer"
-        :options="managerOrProducerOptions"
-        type="managerOrProducer"
-        id="managerOrProducer"
-      />
-    </div>
-
+    
     <div class="form-group required">
       <label class="control-label" for="password">Пароль:</label>
       <b-input v-model="form.password" type="password" id="password" placeholder="Пароль..."></b-input>
@@ -124,9 +115,9 @@ export default {
       phone: {
         required
       },
-      managerOrProducer: {
-        required
-      }
+      // managerOrProducer: {
+      //   required
+      // }
     }
   },
   computed: {

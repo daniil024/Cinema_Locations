@@ -1,5 +1,6 @@
 <template>
   <b-form @submit.prevent="login">
+<h2 style="text-align:center">Вход</h2>
     <div class="form-group">
       <label for="username">Логин:</label>
       <b-input

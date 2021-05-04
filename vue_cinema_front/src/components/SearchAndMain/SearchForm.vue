@@ -49,15 +49,14 @@
     <h4 class="text-center" style="margin-bottom: 40px; display:inline-block;">
       Всего найдено {{ inputform.numberOfServices }} объявлений
     </h4>
-    <router-link to="/newservice" style="display:inline-block; float: right">Добавить локацию</router-link>
+    <router-link v-if="user" to="/newservice" style="display:inline-block; float: right">Добавить локацию</router-link>
+    <router-link v-if="!user" to="/auth/signin" style="display:inline-block; float: right">Добавить локацию</router-link>
     </div>
 
     <div v-for="item in collection" :key="item.id">
-      <!-- <div v-for="item in servicesfill.items" :key="item.id"> -->
       <div style="display: inline-block">
         <h5>
           <a :href="'/service/' + item.id">{{ item.name }}</a>
-          <!-- <a :href="item.link">{{ item.name }}</a> -->
         </h5>
         <p
           style="
@@ -91,12 +90,10 @@
         </div>
       </div>
     </div>
-    <!-- <div style="margin-top:40px; text-align: center">
-      <b-button variant="primary" type="submit">Следующие результаты</b-button>
-    </div> -->
   </div>
 </template>
 <script>
+import { mapGetters } from "vuex";
 import searchRequest from "@/mixins/searchRequest";
 export default {
   name: "Search",
@@ -117,6 +114,7 @@ export default {
     };
   },
   computed: {
+    ...mapGetters(['user']),
     collection() {
       return this.paginate(this.servicesfill.items);
     },

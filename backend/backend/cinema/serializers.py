@@ -25,8 +25,19 @@ from .models import *
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        #fields = ['id', 'username', 'email', 'password']
+        # fields = ['id', 'username', 'email', 'password']
         fields = ['id', 'username', 'email', 'first_name', 'last_name', 'password']
+
+
+class ChangePasswordSerializer(serializers.ModelSerializer):
+    model = User
+
+    old_password = serializers.CharField(required=True)
+    new_password = serializers.CharField(required=True)
+
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'email', 'first_name', 'last_name', 'password', 'old_password', 'new_password']
 
 
 class ManagerSerializer(serializers.ModelSerializer):

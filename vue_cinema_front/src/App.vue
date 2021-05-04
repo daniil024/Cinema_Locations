@@ -62,8 +62,6 @@ export default {
   },
   methods: {
       logout(){
-        // localStorage.removeItem('token');
-        // this.token = undefined;
         this.axios.get('http://127.0.0.1:8000/api/auth/logout',{headers: {'Authorization':`Token ${localStorage.token}`}}, this.user)
         .catch(err=>console.log(err));
 
