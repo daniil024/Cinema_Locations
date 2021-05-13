@@ -1,7 +1,7 @@
 <template>
   <b-form @submit.prevent="handleSubmit()">
     <div class="form-group">
-      <label for="username">E-mail:</label>
+      <label for="email">E-mail:</label>
       <b-input
         v-model="form.email"
         type="text"

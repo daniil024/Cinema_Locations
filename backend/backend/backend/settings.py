@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'djoser',
     # 'rest_framework_simplejwt',
     'corsheaders',
+    'django_rest_passwordreset',
 ]
 
 MIDDLEWARE = [
@@ -50,6 +51,7 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'corsheaders.middleware.CorsPostCsrfMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -156,3 +158,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# SMTP Configuration
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = '*************'
+EMAIL_HOST_PASSWORD = '***********'
+EMAIL_PORT = 587
+ACCOUNT_EMAIL_VERIFICATION = 'none'

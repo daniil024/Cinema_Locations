@@ -27,7 +27,7 @@
       </p>
 
       <p style="display:inline; float:right" class="forgot-password text-right">
-        <router-link to='/forgot'>Забыли пароль?</router-link>
+        <a href="http://127.0.0.1:8000/api/reset_password/">Забыли пароль?</a>
       </p>
 
     </div>

@@ -58,7 +58,7 @@
 
     <p class="mt-2"><small class="text-muted">Все поля отмеченные <span class="text-danger">*</span> 
     обязательны для заполнения.</small></p>
-    <p class="mt-3">Уже есть аккаунт? <router-link to="/auth/signin">Вход</router-link></p>
+    <p class="mt-3">Уже есть аккаунт? <router-link to="/auth/signin/">Вход</router-link></p>
   </b-form>
 </template>
 <script>

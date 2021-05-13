@@ -16,8 +16,11 @@
           id="email"
           placeholder="E-mail..."
         ></b-input>
+        <b-button variant="primary" style="margin-top: 25px" type="submit"
+          >Изменить</b-button
+        >
       </div>
-      <div class="form-group w-75 mx-auto">
+      <!-- <div class="form-group w-75 mx-auto">
         <label for="newPassword">Новый пароль:</label>
         <b-input
           v-model="form.newPassword"
@@ -28,7 +31,7 @@
         <b-button variant="primary" style="margin-top: 25px" type="submit"
           >Изменить</b-button
         >
-      </div>
+      </div> -->
     </b-form>
 
     <div style="margin-top: 100px;">
@@ -42,7 +45,7 @@
           <p class="card-text">
             {{ items[0].description }}
           </p>
-          <a href="#" class="btn btn-primary">Редактировать</a>
+          <a :href="'/editservice/' + items[0].id" class="btn btn-primary">Редактировать</a>
         </div>
       </div>
 
@@ -55,7 +58,7 @@
           <p class="card-text">
             {{ items[1].description }}
           </p>
-          <a href="#" class="btn btn-primary">Редактировать</a>
+          <a :href="'/editservice/' + items[1].id" class="btn btn-primary">Редактировать</a>
         </div>
       </div>
 
@@ -67,7 +70,7 @@
           <p class="card-text">
             {{ items[2].description }}
           </p>
-          <a href="#" class="btn btn-primary">Редактировать</a>
+          <a :href="'/editservice/' + items[2].id" class="btn btn-primary">Редактировать</a>
         </div>
       </div>
     </div>
@@ -93,15 +96,15 @@ export default {
       items:[],
       refs: [
         {
-          text: "Home",
-          href: "#",
+          text: "Главная",
+          href: "/search",
         },
         {
-          text: "Search",
-          href: "#",
+          text: "Поиск",
+          href: "/search",
         },
         {
-          text: "Profile",
+          text: "Профиль",
           active: true,
         },
       ],

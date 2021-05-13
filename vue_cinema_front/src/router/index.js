@@ -2,6 +2,9 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import SignIn from '@/views/auth/SignIn'
 import SignUp from '@/views/auth/SignUp'
+import ForgotDone from '@/views/auth/ForgotDone'
+import ForgotConfirm from '@/views/auth/ForgotConfirm'
+import ForgotComplete from '@/views/auth/ForgotComplete'
 import LK from '@/views/MainPages/LK'
 import Search from '@/views/MainPages/Search'
 import Service from '@/views/MainPages/Service'
@@ -12,14 +15,19 @@ import Forgot from '@/views/auth/Forgot'
 import lodash from 'lodash'
 import VueLodash from 'vue-lodash'
  
-// name is optional
 Vue.use(VueLodash, { name: 'custom' , lodash: lodash })
 Vue.use(Router)
 
 export default new Router({
   mode: 'history',
-  routes: [{
-      path: '/auth/signin',
+  routes: [
+    {
+      path: '/',
+      name: 'Search',
+      component: Search,
+    },
+    {
+      path: '/auth/signin/',
       name: 'SignIn',
       component: SignIn,
     },
@@ -62,6 +70,21 @@ export default new Router({
       path: '/editservice/:id',
       name: 'EditServices',
       component: EditServices,
+    },
+    {
+      path: '/resetdone',
+      name: 'ResetPasswordDone',
+      component: ForgotDone,
+    },
+    {
+      path: '/resetcomplete',
+      name: 'ResetPasswordComplete',
+      component: ForgotComplete,
+    },
+    {
+      path: '/resetconfirm',
+      name: 'ResetPasswordConfirm',
+      component: ForgotConfirm,
     },
   ],
   scrollBehavior(to, from, savedPosition) {

@@ -6,7 +6,6 @@
         <b-navbar-nav>
           <router-link class="nav-link" to="/">Главная</router-link>
           <router-link class="nav-link" to="/search">Поиск</router-link>
-          <router-link class="nav-link" to="#">О нас</router-link>
         </b-navbar-nav>
 
         <b-navbar-nav class="ml-auto" v-if="!token">

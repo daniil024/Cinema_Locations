@@ -19,38 +19,38 @@ class CustomObtainAuthToken(ObtainAuthToken):
         return Response({'token': token.key, 'id': token.user_id, 'user': UserSerializer(user).data})
 
 
-class ChangePasswordView(generics.UpdateAPIView):
-    """
-    An endpoint for changing password.
-    """
-    serializer_class = ChangePasswordSerializer
-    model = User
-
-    def get_object(self, queryset=None):
-        obj = self.request.user
-        return obj
-
-    def update(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        serializer = self.get_serializer(data=request.data)
-
-        if serializer.is_valid():
-            # Check old password
-            if not self.object.check_password(serializer.data.get("old_password")):
-                return Response({"old_password": ["Wrong password."]}, status=status.HTTP_400_BAD_REQUEST)
-            # set_password also hashes the password that the user will get
-            self.object.set_password(serializer.data.get("new_password"))
-            self.object.save()
-            response = {
-                'status': 'success',
-                'code': status.HTTP_200_OK,
-                'message': 'Password updated successfully',
-                'data': []
-            }
-
-            return Response(response)
-
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+# class ChangePasswordView(generics.UpdateAPIView):
+#     """
+#     An endpoint for changing password.
+#     """
+#     serializer_class = ChangePasswordSerializer
+#     model = User
+#
+#     def get_object(self, queryset=None):
+#         obj = self.request.user
+#         return obj
+#
+#     def update(self, request, *args, **kwargs):
+#         self.object = self.get_object()
+#         serializer = self.get_serializer(data=request.data)
+#
+#         if serializer.is_valid():
+#             # Check old password
+#             if not self.object.check_password(serializer.data.get("old_password")):
+#                 return Response({"old_password": ["Wrong password."]}, status=status.HTTP_400_BAD_REQUEST)
+#             # set_password also hashes the password that the user will get
+#             self.object.set_password(serializer.data.get("new_password"))
+#             self.object.save()
+#             response = {
+#                 'status': 'success',
+#                 'code': status.HTTP_200_OK,
+#                 'message': 'Password updated successfully',
+#                 'data': []
+#             }
+#
+#             return Response(response)
+#
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 # permission_class = permissions.IsAuthenticatedOrReadOnly
 # Input in every class we need to protect
@@ -75,70 +75,69 @@ class ChangePasswordView(generics.UpdateAPIView):
 
 
 class Logout(APIView):
-
     def get(self, request, format=None):
         request.user.auth_token.delete()
         return Response(status=status.HTTP_200_OK)
 
 
-class IsManager(permissions.BasePermission):
-
-    def has_object_permission(self, request, view, obj):
-        return obj.user == request.user
-
-
-class ManagerViewSet(generics.ListAPIView):
-    queryset = Manager.objects.all()
-    serializer_class = ManagerSerializer
+# class IsManager(permissions.BasePermission):
+#
+#     def has_object_permission(self, request, view, obj):
+#         return obj.user == request.user
 
 
-class ManagerRetrieveView(generics.RetrieveAPIView):
-    queryset = Manager.objects.all()
-    serializer_class = ManagerSerializer
-
-
-class ManagerUpdateView(generics.UpdateAPIView):
-    queryset = Manager.objects.all()
-    serializer_class = CreateManagerSerializer
-    # permission_classes = (IsManager,)
-    # permission_class = permissions.IsAuthenticatedOrReadOnly
-
-    # def get_queryset(self):
-    #     user = self.request.user
-    #
-    #     if user.is_authenticated:
-    #         return Manager.objects.filter(user=user)
-    #
-    #     raise PermissionDenied()
-
-
-class ManagerCreateView(generics.CreateAPIView):
-    queryset = Manager.objects.all()
-    serializer_class = CreateManagerSerializer
-    permission_classes = (AllowAny,)
-
-
-# -----------------------------------
-
-class ProducerViewSet(generics.ListAPIView):
-    queryset = Producer.objects.all()
-    serializer_class = ProducerSerializer
-
-
-class ProducerRetrieveView(generics.RetrieveAPIView):
-    queryset = Producer.objects.all()
-    serializer_class = ProducerSerializer
-
-
-class ProducerUpdateView(generics.UpdateAPIView):
-    queryset = Producer.objects.all()
-    serializer_class = CreateProducerSerializer
-
-
-class ProducerCreateView(generics.CreateAPIView):
-    queryset = Producer.objects.all()
-    serializer_class = CreateProducerSerializer
-    permission_classes = (AllowAny,)
+# class ManagerViewSet(generics.ListAPIView):
+#     queryset = Manager.objects.all()
+#     serializer_class = ManagerSerializer
+#
+#
+# class ManagerRetrieveView(generics.RetrieveAPIView):
+#     queryset = Manager.objects.all()
+#     serializer_class = ManagerSerializer
+#
+#
+# class ManagerUpdateView(generics.UpdateAPIView):
+#     queryset = Manager.objects.all()
+#     serializer_class = CreateManagerSerializer
+#     # permission_classes = (IsManager,)
+#     # permission_class = permissions.IsAuthenticatedOrReadOnly
+#
+#     # def get_queryset(self):
+#     #     user = self.request.user
+#     #
+#     #     if user.is_authenticated:
+#     #         return Manager.objects.filter(user=user)
+#     #
+#     #     raise PermissionDenied()
+#
+#
+# class ManagerCreateView(generics.CreateAPIView):
+#     queryset = Manager.objects.all()
+#     serializer_class = CreateManagerSerializer
+#     permission_classes = (AllowAny,)
+#
+#
+# # -----------------------------------
+#
+# class ProducerViewSet(generics.ListAPIView):
+#     queryset = Producer.objects.all()
+#     serializer_class = ProducerSerializer
+#
+#
+# class ProducerRetrieveView(generics.RetrieveAPIView):
+#     queryset = Producer.objects.all()
+#     serializer_class = ProducerSerializer
+#
+#
+# class ProducerUpdateView(generics.UpdateAPIView):
+#     queryset = Producer.objects.all()
+#     serializer_class = CreateProducerSerializer
+#
+#
+# class ProducerCreateView(generics.CreateAPIView):
+#     queryset = Producer.objects.all()
+#     serializer_class = CreateProducerSerializer
+#     permission_classes = (AllowAny,)
 
 
 # ---------------------------------------
@@ -195,65 +194,65 @@ class ServiceCreateView(generics.CreateAPIView):
 
 # ---------------------------------------
 
-class TagViewSet(generics.ListAPIView):
-    queryset = Tag.objects.all()
-    serializer_class = TagSerializer
-
-
-class TagRetrieveView(generics.RetrieveAPIView):
-    queryset = Tag.objects.all()
-    serializer_class = TagSerializer
-
-
-class TagUpdateView(generics.UpdateAPIView):
-    queryset = Tag.objects.all()
-    serializer_class = CreateTagSerializer
-
-
-class TagCreateView(generics.CreateAPIView):
-    queryset = Tag.objects.all()
-    serializer_class = CreateTagSerializer
-
-
-# ---------------------------------------
-
-class OrderingViewSet(generics.ListAPIView):
-    queryset = Ordering.objects.all()
-    serializer_class = OrderingSerializer
-
-
-class OrderingRetrieveView(generics.RetrieveAPIView):
-    queryset = Ordering.objects.all()
-    serializer_class = OrderingSerializer
-
-
-class OrderingUpdateView(generics.UpdateAPIView):
-    queryset = Ordering.objects.all()
-    serializer_class = CreateOrderingSerializer
-
-
-class OrderingCreateView(generics.CreateAPIView):
-    queryset = Ordering.objects.all()
-    serializer_class = CreateOrderingSerializer
-
-
-# ---------------------------------------
-
-class MessageViewSet(generics.ListAPIView):
-    queryset = Message.objects.all()
-    serializer_class = MessageSerializer
-
-
-class MessageRetrieveView(generics.RetrieveAPIView):
-    queryset = Message.objects.all()
-    serializer_class = MessageSerializer
-
-
-class MessageUpdateView(generics.UpdateAPIView):
-    queryset = Message.objects.all()
-    serializer_class = CreateMessageSerializer
-
-
-class MessageCreateView(generics.CreateAPIView):
-    queryset = Message.objects.all()
-    serializer_class = CreateMessageSerializer
+# class TagViewSet(generics.ListAPIView):
+#     queryset = Tag.objects.all()
+#     serializer_class = TagSerializer
+#
+#
+# class TagRetrieveView(generics.RetrieveAPIView):
+#     queryset = Tag.objects.all()
+#     serializer_class = TagSerializer
+#
+#
+# class TagUpdateView(generics.UpdateAPIView):
+#     queryset = Tag.objects.all()
+#     serializer_class = CreateTagSerializer
+#
+#
+# class TagCreateView(generics.CreateAPIView):
+#     queryset = Tag.objects.all()
+#     serializer_class = CreateTagSerializer
+#
+#
+# # ---------------------------------------
+#
+# class OrderingViewSet(generics.ListAPIView):
+#     queryset = Ordering.objects.all()
+#     serializer_class = OrderingSerializer
+#
+#
+# class OrderingRetrieveView(generics.RetrieveAPIView):
+#     queryset = Ordering.objects.all()
+#     serializer_class = OrderingSerializer
+#
+#
+# class OrderingUpdateView(generics.UpdateAPIView):
+#     queryset = Ordering.objects.all()
+#     serializer_class = CreateOrderingSerializer
+#
+#
+# class OrderingCreateView(generics.CreateAPIView):
+#     queryset = Ordering.objects.all()
+#     serializer_class = CreateOrderingSerializer
+#
+#
+# # ---------------------------------------
+#
+# class MessageViewSet(generics.ListAPIView):
+#     queryset = Message.objects.all()
+#     serializer_class = MessageSerializer
+#
+#
+# class MessageRetrieveView(generics.RetrieveAPIView):
+#     queryset = Message.objects.all()
+#     serializer_class = MessageSerializer
+#
+#
+# class MessageUpdateView(generics.UpdateAPIView):
+#     queryset = Message.objects.all()
+#     serializer_class = CreateMessageSerializer
+#
+#
+# class MessageCreateView(generics.CreateAPIView):
+#     queryset = Message.objects.all()
+#     serializer_class = CreateMessageSerializer
